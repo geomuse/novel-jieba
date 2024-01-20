@@ -59,16 +59,13 @@ content = [remove_chinese_stopwords(text=sentence) for sentence in content]
 content = [find_chinese(sentence) for sentence in content] 
 
 path = "/home/geo/Downloads/geo/text_mining_bot/case-jieba-and-data-visualtion/result_v1_text.txt"
+
 with open(path,'w',encoding='utf-8') as f :
     for _ in content:
         f.write(f'{str(_)}\n')
 
 contents = []
-for _ in content:
+for _ in content :
     contents += _
 
-path = '/home/geo/Downloads/geo/text_mining_bot/case-jieba-and-data-visualtion/content.pickle'
-with open(path,'wb') as f:
-    pickle.dump(contents,f)
-
-print(f'data saved to {path}')
+print(contents)

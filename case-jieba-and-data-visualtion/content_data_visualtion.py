@@ -1,32 +1,45 @@
 import jieba, nltk, re
 import numpy as np
 import pandas as pd
+
 import matplotlib.pyplot as pt
-import jieba.analyse
+from matplotlib import style
+style.use('ggplot')
+
 from nltk.corpus import stopwords
 import pickle
+
+import matplotlib.pyplot as pt
+from matplotlib import font_manager
+from collections import Counter
+
+import warnings
+warnings.filterwarnings("ignore")
 
 path = "/home/geo/Downloads/geo/text_mining_bot/ntlk_data" 
 nltk.data.path.append(path)
 # nltk.download('stopwords',download_dir=path)
-documents_path = '/home/geo/Downloads/geo/text_mining_bot/case-jieba-and-data-visualtion/result_v1_text.txt'
 
-with open(documents_path,'r',encoding='utf-8') as f:
-    content = f.read()
+file_path = '/home/geo/Downloads/geo/text_mining_bot/case-jieba-and-data-visualtion/content.pickle'
 
-print(content[0])
+with open(file_path, 'rb') as file:
+    content = pickle.load(file)
 
-# with open(documents_path,'rb') as f:
-#     loaded_data = pickle.load(f)
+# print('loaded list:', content)
+# fontP = font_manager.FontProperties()
+# fontP.set_family('SimHei')
+# fontP.set_size(11)
 
-# print(f'loaded data {loaded_data}')    
+word_counts = Counter(content)
+words = list(word_counts.keys())
+counts = list(word_counts.values())
 
-"""
-from wordcloud import WordCloud
-wordcloud = WordCloud(width=800, height=400, background_color='white').generate(content)
+df = pd.DataFrame({'words': words , 'counts': counts})
+df = df.sort_values(by='counts',ascending=False)
 
-pt.figure(figsize=(10, 5))
-pt.imshow(wordcloud, interpolation='bilinear')
-pt.axis('off')
+pt.bar(df['words'], df['counts'],alpha=0.6)
+pt.plot(df['words'], df['counts'],"x-",color='blue',alpha=0.6)
+pt.xlabel('text')
+pt.ylabel('frequency')
+pt.title('distribution?')
 pt.show()
-"""
